@@ -1,0 +1,6 @@
+# 基本はテキストを正規化してLFに
+* text=auto eol=lf
+
+# Windows専用はCRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf

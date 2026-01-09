@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Archives | Tokiwavalley Edition</title>
+    <title>Project Archives</title>
 
     <!-- Google Fonts: Noto Serif JP (和風/雅), Orbitron (近未来/クール) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;500;700&family=Orbitron:wght@400;700&family=Zen+Kaku+Gothic+New:wght@300;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;500;700&family=Orbitron:wght@400;700&family=Zen+Kaku+Gothic+New:wght@300;500&display=swap"
+        rel="stylesheet">
 
     <style>
         :root {
@@ -59,7 +62,9 @@
             z-index: 1;
         }
 
-        h1, h2, h3 {
+        h1,
+        h2,
+        h3 {
             font-family: var(--font-serif);
             font-weight: 700;
         }
@@ -294,10 +299,12 @@
             header {
                 min-height: auto;
             }
+
             .hero-title-group {
                 flex-direction: column;
                 gap: 20px;
             }
+
             .author-info {
                 border-right: none;
                 border-bottom: 2px solid var(--border-gold);
@@ -305,6 +312,7 @@
                 padding-bottom: 20px;
                 text-align: center;
             }
+
             h1.main-title {
                 font-size: 3.5rem;
                 height: auto;
@@ -314,19 +322,23 @@
                 padding-left: 0;
                 padding-bottom: 10px;
             }
+
             .subtitle-wrapper {
                 position: static;
                 margin-top: 20px;
             }
+
             .year-grid {
                 grid-template-columns: 1fr;
             }
+
             .stats {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
+
 <body>
 
     <canvas id="bg-canvas"></canvas>
@@ -341,7 +353,7 @@
                 <h1 class="main-title">Project Archives</h1>
             </div>
             <div class="subtitle-wrapper">
-                <div class="subtitle">TOKIWAVALLEY EDITION</div>
+                <div class="subtitle"></div>
             </div>
         </header>
 
@@ -367,7 +379,7 @@
                 <a href="https://hamaruki.com/" target="_blank">Blog</a>
             </div>
             <div class="copyright">
-                &copy; 2024-2025 Tokiwavalley Project Archives. All Rights Reserved.
+                &copy; 2024-2025 Project Archives. All Rights Reserved.
             </div>
         </footer>
     </div>
@@ -515,7 +527,7 @@
 
                     if (dist < 150) {
                         ctx.beginPath();
-                        ctx.strokeStyle = `rgba(212, 175, 55, ${0.1 - dist/1500})`;
+                        ctx.strokeStyle = `rgba(212, 175, 55, ${0.1 - dist / 1500})`;
                         ctx.lineWidth = 0.5;
                         ctx.moveTo(p.x, p.y);
                         ctx.lineTo(p2.x, p2.y);
@@ -536,4 +548,5 @@
         animate();
     </script>
 </body>
+
 </html>
