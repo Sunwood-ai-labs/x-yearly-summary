@@ -10,20 +10,33 @@ GitHub Pagesで公開されています：`https://Sunwood-ai-labs.github.io/x-y
 
 ```
 x-yearly-summary/
-├── index.html          # トップページ
-├── style.css           # 共通スタイル
-├── script.js           # 年別カード生成スクリプト
-├── 2024/              # 2024年のまとめ
-│   ├── index.html
+├── index.html              # トップページ
+├── style.css               # 共通スタイル
+├── script.js               # 年別カード生成スクリプト
+├── .gitignore              # Git除外設定
+├── 2024/                   # 2024年のプロジェクトアーカイブ
+│   ├── index.html          # 新デザイン適用済み
 │   └── style-2024.css
+├── 2025/                   # 2025年のプロジェクトアーカイブ
+│   └── index.html          # 新デザイン適用済み
+├── twitter-archive/        # Twitterアーカイブ保存用
+│   ├── README.md           # アーカイブ使用方法
+│   ├── 2024/              # 2024年のアーカイブ
+│   │   └── .gitkeep
+│   └── 2025/              # 2025年のアーカイブ
+│       └── .gitkeep
 └── README.md
 ```
 
 ## ✨ 機能
 
-- 年別のまとめページを表示
+- 年別のプロジェクトアーカイブを表示
+- 和風×サイバーパンクの融合デザイン（Tokiwavalley Edition）
 - レスポンシブデザイン対応
+- 背景アニメーション（Canvas パーティクル）
+- ツイートアコーディオン機能
 - 来年以降も簡単に追加可能な構造
+- Twitterアーカイブ保存用フォルダ完備
 
 ## 🔧 新しい年の追加方法
 

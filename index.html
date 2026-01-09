@@ -3,36 +3,472 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X 年間まとめ | Yearly Summary</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Project Archives | Tokiwavalley Edition</title>
+
+    <!-- Google Fonts: Noto Serif JP (和風/雅), Orbitron (近未来/クール) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;500;700&family=Orbitron:wght@400;700&family=Zen+Kaku+Gothic+New:wght@300;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #050505;
+            --card-bg: rgba(20, 20, 25, 0.6);
+            --text-main: #e0e0e0;
+            --accent-gold: #d4af37;
+            --accent-cyan: #00f0ff;
+            --accent-ink: #2b2b2b;
+            --border-gold: rgba(212, 175, 55, 0.3);
+            --border-cyan: rgba(0, 240, 255, 0.3);
+            --font-serif: 'Noto Serif JP', serif;
+            --font-sans: 'Zen Kaku Gothic New', sans-serif;
+            --font-tech: 'Orbitron', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Background Animation Canvas --- */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        /* --- Layout & Typography --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-serif);
+            font-weight: 700;
+        }
+
+        /* --- Header --- */
+        header {
+            padding: 60px 0;
+            text-align: center;
+            border-bottom: 1px solid var(--border-gold);
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .hero-title-group {
+            display: inline-block;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1.main-title {
+            font-size: 5rem;
+            color: var(--accent-gold);
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            margin-bottom: 20px;
+            letter-spacing: 0.3rem;
+            writing-mode: horizontal-tb;
+        }
+
+        .subtitle {
+            font-family: var(--font-tech);
+            color: var(--accent-cyan);
+            font-size: 1.4rem;
+            letter-spacing: 0.3rem;
+            text-transform: uppercase;
+        }
+
+        .intro {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #aaa;
+            max-width: 800px;
+            margin: 0 auto 60px;
+            line-height: 1.8;
+        }
+
+        /* --- Year Cards Grid --- */
+        .years-section {
+            margin-bottom: 100px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--accent-gold);
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+        }
+
+        .year-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .year-grid.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .year-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-gold);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .year-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .year-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            border-color: var(--accent-cyan);
+        }
+
+        .year-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .year-card h3 {
+            font-size: 3rem;
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+            font-family: var(--font-tech);
+        }
+
+        .year-card p {
+            font-size: 1rem;
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--accent-ink);
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 5px;
+            font-family: var(--font-tech);
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.5rem;
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        /* --- Footer --- */
+        footer {
+            margin-top: 100px;
+            padding: 50px 0;
+            border-top: 1px solid var(--border-gold);
+            text-align: center;
+            background: #000;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .copyright {
+            color: #555;
+            font-size: 0.8rem;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            h1.main-title {
+                font-size: 3rem;
+            }
+            .year-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>X 年間まとめ</h1>
-            <p class="subtitle">Yearly Summary of X Posts</p>
-        </div>
-    </header>
 
-    <main class="container">
-        <section class="intro">
-            <p>このサイトでは、年ごとのX（旧Twitter）の投稿をまとめています。</p>
-        </section>
+    <canvas id="bg-canvas"></canvas>
 
-        <section class="years">
-            <h2>年別まとめ</h2>
+    <div class="container">
+        <header>
+            <div class="hero-title-group">
+                <h1 class="main-title">PROJECT ARCHIVES</h1>
+                <div class="subtitle">TOKIWAVALLEY EDITION</div>
+            </div>
+
+            <p class="intro">
+                和風とサイバーパンクが融合した、プロジェクトアーカイブコレクション。<br>
+                年別に整理された創作活動の軌跡をご覧ください。
+            </p>
+        </header>
+
+        <section class="years-section">
+            <h2 class="section-title">年別アーカイブ</h2>
             <div class="year-grid" id="yearGrid">
-                <!-- 年別カードがここに動的に追加されます -->
+                <!-- 年別カードがJavaScriptで動的に生成されます -->
             </div>
         </section>
-    </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 X Yearly Summary. All rights reserved.</p>
-        </div>
-    </footer>
+        <footer>
+            <div class="footer-links">
+                <a href="https://x.com/hAru_mAki_ch" target="_blank">X (Twitter)</a>
+                <a href="https://note.com/sunwood_ai_labs" target="_blank">note</a>
+                <a href="https://github.com/Sunwood-ai-labs" target="_blank">GitHub</a>
+                <a href="https://zenn.dev/" target="_blank">Zenn</a>
+                <a href="https://qiita.com/" target="_blank">Qiita</a>
+                <a href="https://hamaruki.com/" target="_blank">Blog</a>
+            </div>
+            <div class="copyright">
+                &copy; 2024-2025 Tokiwavalley Project Archives. All Rights Reserved.
+            </div>
+        </footer>
+    </div>
 
-    <script src="script.js"></script>
+    <script>
+        // 年別データの定義
+        const yearsData = [
+            {
+                year: 2024,
+                description: '2024年のプロジェクトアーカイブ',
+                stats: {
+                    posts: '準備中',
+                    likes: '準備中',
+                    retweets: '準備中'
+                },
+                link: './2024/index.html'
+            },
+            {
+                year: 2025,
+                description: '2025年のプロジェクトアーカイブ',
+                stats: {
+                    posts: '100+',
+                    likes: '準備中',
+                    retweets: '準備中'
+                },
+                link: './2025/index.html'
+            }
+        ];
+
+        // ページ読み込み時に年別カードを生成
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearGrid = document.getElementById('yearGrid');
+
+            // 年を降順でソート（新しい年が上に来るように）
+            const sortedYears = [...yearsData].sort((a, b) => b.year - a.year);
+
+            sortedYears.forEach(yearData => {
+                const card = createYearCard(yearData);
+                yearGrid.appendChild(card);
+            });
+
+            // Intersection Observer for scroll animations
+            setTimeout(() => {
+                yearGrid.classList.add('visible');
+            }, 100);
+        });
+
+        // 年別カードを生成する関数
+        function createYearCard(data) {
+            const card = document.createElement('a');
+            card.className = 'year-card';
+            card.href = data.link;
+
+            card.innerHTML = `
+                <h3>${data.year}</h3>
+                <p>${data.description}</p>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">投稿数</span>
+                        <span class="stat-value">${data.stats.posts}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">いいね数</span>
+                        <span class="stat-value">${data.stats.likes}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">リポスト数</span>
+                        <span class="stat-value">${data.stats.retweets}</span>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // --- Canvas Background Animation: Digital Ink Stream ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+                this.alpha = Math.random() * 0.5 + 0.1;
+                this.life = Math.random() * 100;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life--;
+
+                if (this.x < 0) this.x = width;
+                if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height;
+                if (this.y > height) this.y = 0;
+
+                if (this.life <= 0) this.reset();
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(0, 240, 255, ${this.alpha})`;
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const particleCount = Math.min(window.innerWidth / 10, 100);
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                p.update();
+                p.draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(212, 175, 55, ${0.1 - dist/1500})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            resize();
+            initParticles();
+        });
+
+        resize();
+        initParticles();
+        animate();
+    </script>
 </body>
 </html>

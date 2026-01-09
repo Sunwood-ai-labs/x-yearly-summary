@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Archives 2025 | Tokiwavalley Edition</title>
+
+    <!-- Google Fonts: Noto Serif JP (和風/雅), Orbitron (近未来/クール) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;500;700&family=Orbitron:wght@400;700&family=Zen+Kaku+Gothic+New:wght@300;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #050505; /* 墨色 */
+            --card-bg: rgba(20, 20, 25, 0.6);
+            --text-main: #e0e0e0;
+            --accent-gold: #d4af37; /* 金箔 */
+            --accent-cyan: #00f0ff; /* 未来光 */
+            --accent-ink: #2b2b2b;
+            --border-gold: rgba(212, 175, 55, 0.3);
+            --border-cyan: rgba(0, 240, 255, 0.3);
+            --font-serif: 'Noto Serif JP', serif;
+            --font-sans: 'Zen Kaku Gothic New', sans-serif;
+            --font-tech: 'Orbitron', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Background Animation Canvas --- */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        /* --- Layout & Typography --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-serif);
+            font-weight: 700;
+        }
+
+        /* --- Header --- */
+        header {
+            padding: 40px 0;
+            text-align: center;
+            border-bottom: 1px solid var(--border-gold);
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .hero-title-group {
+            display: inline-block;
+            text-align: left;
+        }
+
+        h1.main-title {
+            font-size: 4rem;
+            color: var(--accent-gold);
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            margin-bottom: 10px;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            height: 300px;
+            letter-spacing: 0.5rem;
+            border-left: 1px solid var(--accent-gold);
+            padding-left: 20px;
+            margin-left: 20px;
+        }
+
+        .subtitle {
+            font-family: var(--font-tech);
+            color: var(--accent-cyan);
+            font-size: 1.2rem;
+            letter-spacing: 0.2rem;
+            margin-top: 20px;
+            text-transform: uppercase;
+            position: absolute;
+            bottom: 20px;
+            right: 0;
+        }
+
+        nav {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-family: var(--font-tech);
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border: 1px solid var(--border-cyan);
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--border-cyan);
+        }
+
+        /* --- Project Sections --- */
+        section {
+            margin-bottom: 100px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--accent-ink);
+            padding-bottom: 10px;
+        }
+
+        .section-month {
+            font-family: var(--font-tech);
+            font-size: 2.5rem;
+            color: var(--text-main);
+            margin-right: 20px;
+            position: relative;
+        }
+
+        .section-month::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background: var(--accent-gold);
+            margin-top: 5px;
+        }
+
+        .section-desc {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* --- Cards --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-gold);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-color: var(--accent-cyan);
+        }
+
+        .card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: #aaa;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        /* --- Links & Buttons --- */
+        .links {
+            margin-bottom: 15px;
+        }
+
+        .link-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--accent-cyan);
+            text-decoration: none;
+            border: 1px solid var(--border-cyan);
+            margin-right: 5px;
+            margin-bottom: 5px;
+            transition: 0.3s;
+        }
+
+        .link-btn:hover {
+            background: var(--accent-cyan);
+            color: #000;
+        }
+
+        /* --- Tweet Accordion --- */
+        .tweet-accordion {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: 1px solid var(--accent-ink);
+            color: var(--accent-gold);
+            padding: 10px;
+            cursor: pointer;
+            font-family: var(--font-tech);
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tweet-accordion:hover {
+            border-color: var(--accent-gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .tweet-list {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 2px solid var(--border-cyan);
+        }
+
+        .tweet-list.open {
+            max-height: 300px; /* Limit height with scroll */
+            overflow-y: auto;
+        }
+
+        /* Custom Scrollbar for tweet list */
+        .tweet-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .tweet-list::-webkit-scrollbar-track {
+            background: #000;
+        }
+        .tweet-list::-webkit-scrollbar-thumb {
+            background: var(--border-gold);
+        }
+
+        .tweet-item {
+            display: block;
+            padding: 8px 10px;
+            font-size: 0.75rem;
+            color: #888;
+            text-decoration: none;
+            border-bottom: 1px solid #1a1a1a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tweet-item:hover {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--accent-cyan);
+        }
+
+        /* --- Footer --- */
+        footer {
+            margin-top: 100px;
+            padding: 50px 0;
+            border-top: 1px solid var(--border-gold);
+            text-align: center;
+            background: #000;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .copyright {
+            color: #555;
+            font-size: 0.8rem;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            h1.main-title {
+                height: auto;
+                writing-mode: horizontal-tb;
+                border-left: none;
+                border-bottom: 1px solid var(--accent-gold);
+                padding-bottom: 10px;
+                margin-left: 0;
+                font-size: 2.5rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .subtitle {
+                position: static;
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="container">
+        <header>
+            <div class="hero-title-group">
+                <h1 class="main-title">Project Archives</h1>
+                <div class="subtitle">TOKIWAVALLEY EDITION // 2025</div>
+            </div>
+
+            <nav>
+                <a href="../index.html">← トップに戻る</a>
+                <a href="#sept">September</a>
+                <a href="#oct">October</a>
+                <a href="#nov">November</a>
+                <a href="#dec">December</a>
+            </nav>
+        </header>
+
+        <!-- 12月後半 -->
+        <section id="dec-late">
+            <div class="section-header">
+                <div class="section-month">DEC <span style="font-size:1rem; color:var(--accent-gold);">Late</span></div>
+                <div class="section-desc">Cybersecurity, 3D Assets & New Year Greetings</div>
+            </div>
+            <div class="grid">
+
+                <!-- Card 1 -->
+                <div class="card">
+                    <span class="card-icon">🔐</span>
+                    <h3>セキュリティ学習</h3>
+                    <p>WSLにKali Linuxインストール、Google Antigravity連携。Hack The Box課題クリア(Flag Command、SpookyPass)。</p>
+                    <div class="links">
+                        <a href="https://note.com/sunwood_ai_labs/n/n4d60f68adbf2" target="_blank" class="link-btn">📄 記事を読む</a>
+                    </div>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (7)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/2006349248879788475" target="_blank" class="tweet-item">x.com/hAru_mAki_ch/status/2006349248879788475</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005977969127481766" target="_blank" class="tweet-item">x.com/hAru_mAki_ch/status/2005977969127481766</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005975636293345790" target="_blank" class="tweet-item">x.com/hAru_mAki_ch/status/2005975636293345790</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005973624914874674" target="_blank" class="tweet-item">x.com/hAru_mAki_ch/status/2005973624914874674</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005702893601730659" target="_blank" class="tweet-item">x.com/hAru_mAki_ch/status/2005702893601730659</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005663411909300641" target="_blank" class="tweet-item">x.com/hAru_mAki_ch/status/2005663411909300641</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005657344773177450" target="_blank" class="tweet-item">x.com/hAru_mAki_ch/status/2005657344773177450</a>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="card">
+                    <span class="card-icon">🎍</span>
+                    <h3>年賀状プロンプト集</h3>
+                    <p>ステンドグラス、少年マンガ表紙風、大正浪漫、水墨画×金箔、HD-2D等14種以上のオリキャラ年賀状プロンプト。</p>
+                    <div class="links">
+                        <a href="https://note.com/sunwood_ai_labs/n/n2bc46e31ac2f" target="_blank" class="link-btn">📄 記事を読む</a>
+                    </div>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (36)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/2006349145494438047" target="_blank" class="tweet-item">Status 2006349145494438047</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006349143476945369" target="_blank" class="tweet-item">Status 2006349143476945369</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006348327684902936" target="_blank" class="tweet-item">Status 2006348327684902936</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006344273919365598" target="_blank" class="tweet-item">Status 2006344273919365598</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006344267242115240" target="_blank" class="tweet-item">Status 2006344267242115240</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006343975477891313" target="_blank" class="tweet-item">Status 2006343975477891313</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006343971858198809" target="_blank" class="tweet-item">Status 2006343971858198809</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006343422500880597" target="_blank" class="tweet-item">Status 2006343422500880597</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006343419178963188" target="_blank" class="tweet-item">Status 2006343419178963188</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006342435941896488" target="_blank" class="tweet-item">Status 2006342435941896488</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006342432225718510" target="_blank" class="tweet-item">Status 2006342432225718510</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006339599233372548" target="_blank" class="tweet-item">Status 2006339599233372548</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006339595894731226" target="_blank" class="tweet-item">Status 2006339595894731226</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006339153957630108" target="_blank" class="tweet-item">Status 2006339153957630108</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006339150375735697" target="_blank" class="tweet-item">Status 2006339150375735697</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006338057415594450" target="_blank" class="tweet-item">Status 2006338057415594450</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006338054081159373" target="_blank" class="tweet-item">Status 2006338054081159373</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006337703521194437" target="_blank" class="tweet-item">Status 2006337703521194437</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006337700018942194" target="_blank" class="tweet-item">Status 2006337700018942194</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006337420267225118" target="_blank" class="tweet-item">Status 2006337420267225118</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006337416131498308" target="_blank" class="tweet-item">Status 2006337416131498308</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006337178985783338" target="_blank" class="tweet-item">Status 2006337178985783338</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006337175076434033" target="_blank" class="tweet-item">Status 2006337175076434033</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006333449905623373" target="_blank" class="tweet-item">Status 2006333449905623373</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006333446814400992" target="_blank" class="tweet-item">Status 2006333446814400992</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006333194434703833" target="_blank" class="tweet-item">Status 2006333194434703833</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006333189292454292" target="_blank" class="tweet-item">Status 2006333189292454292</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006332825520484719" target="_blank" class="tweet-item">Status 2006332825520484719</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006332821514711202" target="_blank" class="tweet-item">Status 2006332821514711202</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006332547228381342" target="_blank" class="tweet-item">Status 2006332547228381342</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006332543675539892" target="_blank" class="tweet-item">Status 2006332543675539892</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006332190859411757" target="_blank" class="tweet-item">Status 2006332190859411757</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006332188015591609" target="_blank" class="tweet-item">Status 2006332188015591609</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006330681815884121" target="_blank" class="tweet-item">Status 2006330681815884121</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006330678464700847" target="_blank" class="tweet-item">Status 2006330678464700847</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006314582709846474" target="_blank" class="tweet-item">Status 2006314582709846474</a>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="card">
+                    <span class="card-icon">🎬</span>
+                    <h3>潮のしおりシリーズ</h3>
+                    <p>小豆島動画生成コンテスト向けMV作品。パートごとに動画生成。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (6)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/2006314070908313663" target="_blank" class="tweet-item">Status 2006314070908313663</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006308989357924692" target="_blank" class="tweet-item">Status 2006308989357924692</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006303339018068034" target="_blank" class="tweet-item">Status 2006303339018068034</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006303040522117362" target="_blank" class="tweet-item">Status 2006303040522117362</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006279875645284466" target="_blank" class="tweet-item">Status 2006279875645284466</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006278958955000226" target="_blank" class="tweet-item">Status 2006278958955000226</a>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="card">
+                    <span class="card-icon">🎨</span>
+                    <h3>trellis-2 3Dアセット作成</h3>
+                    <p>2D→3Dモデル生成、ローポリゴン化、UVマップ作成、テクスチャ生成。Blenderスクリプトで自動化。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (10)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/2005566295753015433" target="_blank" class="tweet-item">Status 2005566295753015433</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005309428476813330" target="_blank" class="tweet-item">Status 2005309428476813330</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005308371176681505" target="_blank" class="tweet-item">Status 2005308371176681505</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005305382617629074" target="_blank" class="tweet-item">Status 2005305382617629074</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005297295848513684" target="_blank" class="tweet-item">Status 2005297295848513684</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005297292354687349" target="_blank" class="tweet-item">Status 2005297292354687349</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005297289036968370" target="_blank" class="tweet-item">Status 2005297289036968370</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005292948255293723" target="_blank" class="tweet-item">Status 2005292948255293723</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005281473591755159" target="_blank" class="tweet-item">Status 2005281473591755159</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005281470064287866" target="_blank" class="tweet-item">Status 2005281470064287866</a>
+                    </div>
+                </div>
+
+                 <!-- Card 5 -->
+                 <div class="card">
+                    <span class="card-icon">🌐</span>
+                    <h3>Google Antigravity ZERO_GRAVITY</h3>
+                    <p>ルールとワークフロー一式を生成するワークスペース。ViduQ2+SUNO用コンペ向けワークスペース作成。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (6)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/2006405500011983120" target="_blank" class="tweet-item">Status 2006405500011983120</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005971243120689482" target="_blank" class="tweet-item">Status 2005971243120689482</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006329106162700481" target="_blank" class="tweet-item">Status 2006329106162700481</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006327200866578550" target="_blank" class="tweet-item">Status 2006327200866578550</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006323753752658201" target="_blank" class="tweet-item">Status 2006323753752658201</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2005876158936838202" target="_blank" class="tweet-item">Status 2005876158936838202</a>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="card">
+                    <span class="card-icon">🖼️</span>
+                    <h3>qwen-image-2512 テスト</h3>
+                    <p>最強クラスOSS画像生成モデル。リアル画像、プロダクトフォト、日本語テキスト対応。</p>
+                    <div class="links">
+                        <a href="https://note.com/sunwood_ai_labs/n/na929f66b918e" target="_blank" class="link-btn">📄 記事を読む</a>
+                    </div>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (5)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/2006372294365724681" target="_blank" class="tweet-item">Status 2006372294365724681</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006365625254642125" target="_blank" class="tweet-item">Status 2006365625254642125</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006365621332967733" target="_blank" class="tweet-item">Status 2006365621332967733</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006334354021290015" target="_blank" class="tweet-item">Status 2006334354021290015</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2006334440495337939" target="_blank" class="tweet-item">Status 2006334440495337939</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 12月前半 -->
+        <section id="dec-early">
+            <div class="section-header">
+                <div class="section-month">DEC <span style="font-size:1rem; color:var(--accent-gold);">Early</span></div>
+                <div class="section-desc">Automation, Repositories & Magazines</div>
+            </div>
+            <div class="grid">
+
+                <div class="card">
+                    <span class="card-icon">🚀</span>
+                    <h3>Nano Banana Pro 3大リポジトリ解析</h3>
+                    <p>有名プロンプト共有リポジトリの解析実験。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (4)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/2000631622014800039" target="_blank" class="tweet-item">Status 2000631622014800039</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000631619754107245" target="_blank" class="tweet-item">Status 2000631619754107245</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000631617514254743" target="_blank" class="tweet-item">Status 2000631617514254743</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000631613919768727" target="_blank" class="tweet-item">Status 2000631613919768727</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🎭</span>
+                    <h3>Playwright codegen スクリプト化</h3>
+                    <p>ブラウザ操作をスクリプト化。Node.js/Python版テスト、Antigravityでエラー修正。E2Eテスト自動化。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (13)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/2000442068175552695" target="_blank" class="tweet-item">Status 2000442068175552695</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000442064916635695" target="_blank" class="tweet-item">Status 2000442064916635695</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000440520154468570" target="_blank" class="tweet-item">Status 2000440520154468570</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000436720937161022" target="_blank" class="tweet-item">Status 2000436720937161022</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000436484084470228" target="_blank" class="tweet-item">Status 2000436484084470228</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000431815258251438" target="_blank" class="tweet-item">Status 2000431815258251438</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000431812750012558" target="_blank" class="tweet-item">Status 2000431812750012558</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000431201480483092" target="_blank" class="tweet-item">Status 2000431201480483092</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000431199240769837" target="_blank" class="tweet-item">Status 2000431199240769837</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000421564374982911" target="_blank" class="tweet-item">Status 2000421564374982911</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000419773457596750" target="_blank" class="tweet-item">Status 2000419773457596750</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000419195641852298" target="_blank" class="tweet-item">Status 2000419195641852298</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000415692844093619" target="_blank" class="tweet-item">Status 2000415692844093619</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">📰</span>
+                    <h3>Nano Banana Pro 記事マガジン作成</h3>
+                    <p>キャラ弁、クラス弁当等のプロンプト作成・テスト。noteマガジン無料公開。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (4)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/2000588723503714618" target="_blank" class="tweet-item">Status 2000588723503714618</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000587839352803499" target="_blank" class="tweet-item">Status 2000587839352803499</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000586248097005916" target="_blank" class="tweet-item">Status 2000586248097005916</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/2000504884534395341" target="_blank" class="tweet-item">Status 2000504884534395341</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 11月 -->
+        <section id="nov">
+            <div class="section-header">
+                <div class="section-month">NOV</div>
+                <div class="section-desc">Multi-Agents, Apps & Image Gen</div>
+            </div>
+            <div class="grid">
+
+                <div class="card">
+                    <span class="card-icon">🤖</span>
+                    <h3>ニコニコ弾幕マルチエージェント</h3>
+                    <p>動画や記事を解析してニコニコ動画風弾幕コメントをJSON形式で生成。複数ペルソナをシミュレート。Gemini 3.0対応。</p>
+                    <div class="links">
+                        <a href="https://gemini.google.com/gem/1TBJOXZjj8oVcY_gVsYHTL-2eIfECQCf4?usp=sharing" target="_blank" class="link-btn">💎 Gemini</a>
+                    </div>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (6)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/1995538630304264448" target="_blank" class="tweet-item">Status 1995538630304264448</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995538446241464536" target="_blank" class="tweet-item">Status 1995538446241464536</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983104214512611615" target="_blank" class="tweet-item">Status 1983104214512611615</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1982002495766298767" target="_blank" class="tweet-item">Status 1982002495766298767</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1982001506397401314" target="_blank" class="tweet-item">Status 1982001506397401314</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1981999309051568336" target="_blank" class="tweet-item">Status 1981999309051568336</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">📚</span>
+                    <h3>Bookshelf アプリ開発</h3>
+                    <p>Nano Banana Proで生成した漫画やインフォグラフィックを管理するOSSアプリ。v0.1.0→v0.3.0連続リリース。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (7)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/1995206394384089527" target="_blank" class="tweet-item">Status 1995206394384089527</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995066492052963534" target="_blank" class="tweet-item">Status 1995066492052963534</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995066495605547479" target="_blank" class="tweet-item">Status 1995066495605547479</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995060014541934693" target="_blank" class="tweet-item">Status 1995060014541934693</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1994851902119711206" target="_blank" class="tweet-item">Status 1994851902119711206</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1994851907681358308" target="_blank" class="tweet-item">Status 1994851907681358308</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1994850512764899453" target="_blank" class="tweet-item">Status 1994850512764899453</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🖼️</span>
+                    <h3>Z-Image Turbo テキストレンダリング実験</h3>
+                    <p>Alibabaの新画像生成AI。日本語/英語/フォント/配置等10種類の実験で精度検証。Google Colab付き記事化。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (31)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/1995201294148260095" target="_blank" class="tweet-item">Status 1995201294148260095</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995201298338386193" target="_blank" class="tweet-item">Status 1995201298338386193</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995201302528422325" target="_blank" class="tweet-item">Status 1995201302528422325</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995201306399748603" target="_blank" class="tweet-item">Status 1995201306399748603</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995201310149517395" target="_blank" class="tweet-item">Status 1995201310149517395</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995201313957888323" target="_blank" class="tweet-item">Status 1995201313957888323</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995201317841916292" target="_blank" class="tweet-item">Status 1995201317841916292</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995201321499312563" target="_blank" class="tweet-item">Status 1995201321499312563</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995201325257404844" target="_blank" class="tweet-item">Status 1995201325257404844</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995201328940019913" target="_blank" class="tweet-item">Status 1995201328940019913</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995201332471554500" target="_blank" class="tweet-item">Status 1995201332471554500</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995201336275824877" target="_blank" class="tweet-item">Status 1995201336275824877</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995201340293935447" target="_blank" class="tweet-item">Status 1995201340293935447</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995201344005959923" target="_blank" class="tweet-item">Status 1995201344005959923</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995201348212822377" target="_blank" class="tweet-item">Status 1995201348212822377</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995201351694090425" target="_blank" class="tweet-item">Status 1995201351694090425</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995208776467804372" target="_blank" class="tweet-item">Status 1995208776467804372</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995209377918398503" target="_blank" class="tweet-item">Status 1995209377918398503</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995163467251429602" target="_blank" class="tweet-item">Status 1995163467251429602</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995168145720713410" target="_blank" class="tweet-item">Status 1995168145720713410</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995151673464107115" target="_blank" class="tweet-item">Status 1995151673464107115</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995151677234815254" target="_blank" class="tweet-item">Status 1995151677234815254</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995151680594403654" target="_blank" class="tweet-item">Status 1995151680594403654</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995151683832467583" target="_blank" class="tweet-item">Status 1995151683832467583</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995151687116578948" target="_blank" class="tweet-item">Status 1995151687116578948</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995151690492952830" target="_blank" class="tweet-item">Status 1995151690492952830</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995151693944938653" target="_blank" class="tweet-item">Status 1995151693944938653</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995151697640136766" target="_blank" class="tweet-item">Status 1995151697640136766</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995151700911603741" target="_blank" class="tweet-item">Status 1995151700911603741</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995146453392765163" target="_blank" class="tweet-item">Status 1995146453392765163</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🎨</span>
+                    <h3>Nano Banana Pro 画像/動画生成</h3>
+                    <p>LINEスタンプ風、部屋設定、ほんわか図解プロンプト、9つのカメラショット等。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (6)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/1994858166727971214" target="_blank" class="tweet-item">Status 1994858166727971214</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995034356210122802" target="_blank" class="tweet-item">Status 1995034356210122802</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995053724528730384" target="_blank" class="tweet-item">Status 1995053724528730384</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995140880685203588" target="_blank" class="tweet-item">Status 1995140880685203588</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995122300635811928" target="_blank" class="tweet-item">Status 1995122300635811928</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1995122307258335521" target="_blank" class="tweet-item">Status 1995122307258335521</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🎥</span>
+                    <h3>Vidi2 紹介</h3>
+                    <p>ByteDanceの動画理解AI。テキストでシーン特定、自動編集機能。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (1)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/1995212989461622900" target="_blank" class="tweet-item">Status 1995212989461622900</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 10月 -->
+        <section id="oct">
+            <div class="section-header">
+                <div class="section-month">OCT</div>
+                <div class="section-desc">Video Gen, Agents & Holograms</div>
+            </div>
+            <div class="grid">
+
+                <div class="card">
+                    <span class="card-icon">🎬</span>
+                    <h3>Sora2 キャラカメオ実験</h3>
+                    <p>RPG風キャラクター、ぬいぐるみ、複数キャラクターの組み合わせをテスト。麻雀/世界旅行/カフェシーン等を作成。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (20)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/1984258605953290358" target="_blank" class="tweet-item">Status 1984258605953290358</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983896351814644063" target="_blank" class="tweet-item">Status 1983896351814644063</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983896349793013892" target="_blank" class="tweet-item">Status 1983896349793013892</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983896348094235022" target="_blank" class="tweet-item">Status 1983896348094235022</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983896345506181597" target="_blank" class="tweet-item">Status 1983896345506181597</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983893561700676092" target="_blank" class="tweet-item">Status 1983893561700676092</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983885301341941912" target="_blank" class="tweet-item">Status 1983885301341941912</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983885299366482185" target="_blank" class="tweet-item">Status 1983885299366482185</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983885297051181306" target="_blank" class="tweet-item">Status 1983885297051181306</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983883942190362797" target="_blank" class="tweet-item">Status 1983883942190362797</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983883940055392745" target="_blank" class="tweet-item">Status 1983883940055392745</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983882441480925274" target="_blank" class="tweet-item">Status 1983882441480925274</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983882439832551481" target="_blank" class="tweet-item">Status 1983882439832551481</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983882437932503405" target="_blank" class="tweet-item">Status 1983882437932503405</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983837792825438704" target="_blank" class="tweet-item">Status 1983837792825438704</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983821131267371459" target="_blank" class="tweet-item">Status 1983821131267371459</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983821129669341495" target="_blank" class="tweet-item">Status 1983821129669341495</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983821127324705111" target="_blank" class="tweet-item">Status 1983821127324705111</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983797955791614199" target="_blank" class="tweet-item">Status 1983797955791614199</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983717558600798716" target="_blank" class="tweet-item">Status 1983717558600798716</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🔬</span>
+                    <h3>Agent Lightning フレームワークテスト</h3>
+                    <p>MicrosoftのAgent LightningをGoogle Colabで実行。RL/プロンプト最適化、AgentOpsでトレース可視化。</p>
+                    <div class="links">
+                        <a href="https://hamaruki.com/run-agent-lightning-examples-apo-on-colab-20251029/" target="_blank" class="link-btn">📄 記事を読む</a>
+                    </div>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (10)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/1983586565826998624" target="_blank" class="tweet-item">Status 1983586565826998624</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983586563603972400" target="_blank" class="tweet-item">Status 1983586563603972400</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983577952731460049" target="_blank" class="tweet-item">Status 1983577952731460049</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983573657843855519" target="_blank" class="tweet-item">Status 1983573657843855519</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983526999189836113" target="_blank" class="tweet-item">Status 1983526999189836113</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983526996744573098" target="_blank" class="tweet-item">Status 1983526996744573098</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983520643774836955" target="_blank" class="tweet-item">Status 1983520643774836955</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983512748492251342" target="_blank" class="tweet-item">Status 1983512748492251342</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983507316885393892" target="_blank" class="tweet-item">Status 1983507316885393892</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983507314645889437" target="_blank" class="tweet-item">Status 1983507314645889437</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🖼️</span>
+                    <h3>粒子ホログラムプロンプト</h3>
+                    <p>Dragon Knight素材を使ったスペクトラル粒子ホログラム画像生成プロンプトを開発。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (2)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/1983893567920861664" target="_blank" class="tweet-item">Status 1983893567920861664</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983893565425250358" target="_blank" class="tweet-item">Status 1983893565425250358</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">📹</span>
+                    <h3>sora2 storyboard機能テスト</h3>
+                    <p>日本語エラー対応、フォトリアル調整等を検証。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (4)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/1983474479994216650" target="_blank" class="tweet-item">Status 1983474479994216650</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983473863758655568" target="_blank" class="tweet-item">Status 1983473863758655568</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983473626688127345" target="_blank" class="tweet-item">Status 1983473626688127345</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983473359695568943" target="_blank" class="tweet-item">Status 1983473359695568943</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🔧</span>
+                    <h3>その他ツールテスト</h3>
+                    <p>Codex利用量確認、Grok画像編集、Manus AIクレジット確認、モフモフぬいぐるみライティング実験。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (4)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/1983902765811417217" target="_blank" class="tweet-item">Status 1983902765811417217</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983730129563218072" target="_blank" class="tweet-item">Status 1983730129563218072</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983724447774470166" target="_blank" class="tweet-item">Status 1983724447774470166</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983505941459869891" target="_blank" class="tweet-item">Status 1983505941459869891</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🎭</span>
+                    <h3>Higgsfield Face Swap テスト</h3>
+                    <p>Higgsfieldの新機能Face SwapをテストしKlingで動画化。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (2)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/1983881095553937430" target="_blank" class="tweet-item">Status 1983881095553937430</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1983780787393851524" target="_blank" class="tweet-item">Status 1983780787393851524</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9月 -->
+        <section id="sept">
+            <div class="section-header">
+                <div class="section-month">SEPT</div>
+                <div class="section-desc">Hackathons, Vidu & Research</div>
+            </div>
+            <div class="grid">
+
+                <div class="card">
+                    <span class="card-icon">🎮</span>
+                    <h3>KIROハッカソン HARINA V3</h3>
+                    <p>LLMを使ったレシート認識アプリ。バッチ処理実装、デモ動画/解説動画作成(英語版含む)。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (9)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/1967241723333255473" target="_blank" class="tweet-item">Status 1967241723333255473</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967238396327432629" target="_blank" class="tweet-item">Status 1967238396327432629</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967237648042668105" target="_blank" class="tweet-item">Status 1967237648042668105</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967235555928035404" target="_blank" class="tweet-item">Status 1967235555928035404</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967232015885123809" target="_blank" class="tweet-item">Status 1967232015885123809</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967157089215926673" target="_blank" class="tweet-item">Status 1967157089215926673</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967147232110801100" target="_blank" class="tweet-item">Status 1967147232110801100</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967146413302931870" target="_blank" class="tweet-item">Status 1967146413302931870</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967134687895367960" target="_blank" class="tweet-item">Status 1967134687895367960</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🎬</span>
+                    <h3>Vidu MCPサーバー・動画生成ワークフロー</h3>
+                    <p>ViduのMCPサーバー(Streamable Http)とAPIをPythonでテスト。RooCode×Grok Code Fast1で動画生成。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (6)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/1967203335767011455" target="_blank" class="tweet-item">Status 1967203335767011455</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967190391092125983" target="_blank" class="tweet-item">Status 1967190391092125983</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967116068985729430" target="_blank" class="tweet-item">Status 1967116068985729430</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967112472491630820" target="_blank" class="tweet-item">Status 1967112472491630820</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967112263938306413" target="_blank" class="tweet-item">Status 1967112263938306413</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967104695278899613" target="_blank" class="tweet-item">Status 1967104695278899613</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🎬</span>
+                    <h3>AI動画生成ツールテスト</h3>
+                    <p>Kling, Seedance-1-pro, Seedream V4でファッション誌風画像、ドット絵風動画、ファンタジーシーン等を作成。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (6)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/1967576102702068205" target="_blank" class="tweet-item">Status 1967576102702068205</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967572896181821638" target="_blank" class="tweet-item">Status 1967572896181821638</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967273576098406582" target="_blank" class="tweet-item">Status 1967273576098406582</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967252015152771375" target="_blank" class="tweet-item">Status 1967252015152771375</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1966879206073397315" target="_blank" class="tweet-item">Status 1966879206073397315</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1966878662025945566" target="_blank" class="tweet-item">Status 1966878662025945566</a>
+                    </div>
+                </div>
+
+                 <div class="card">
+                    <span class="card-icon">🖼️</span>
+                    <h3>SRPO画像生成実験</h3>
+                    <p>TencentのSRPOモデルで妖怪テーマの画像生成(蛇女、河童、天狗)。Google Colab A100 80GBで実行。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (3)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/1967142190402203717" target="_blank" class="tweet-item">Status 1967142190402203717</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967141058363719746" target="_blank" class="tweet-item">Status 1967141058363719746</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967136810125193682" target="_blank" class="tweet-item">Status 1967136810125193682</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🎤</span>
+                    <h3>プロフィール画像の動化・音声生成</h3>
+                    <p>プロフィール画像から動画と音声を生成。Nano Banana Proとの組み合わせ。</p>
+                    <button class="tweet-accordion" onclick="toggleTweets(this)">
+                        <span>SHOW TWEETS (2)</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="tweet-list">
+                        <a href="https://x.com/hAru_mAki_ch/status/1967174992464171238" target="_blank" class="tweet-item">Status 1967174992464171238</a>
+                        <a href="https://x.com/hAru_mAki_ch/status/1967183532532658445" target="_blank" class="tweet-item">Status 1967183532532658445</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-links">
+                <a href="https://x.com/hAru_mAki_ch" target="_blank">X (Twitter)</a>
+                <a href="https://note.com/sunwood_ai_labs" target="_blank">note</a>
+                <a href="https://github.com/Sunwood-ai-labs" target="_blank">GitHub</a>
+                <a href="https://zenn.dev/" target="_blank">Zenn</a>
+                <a href="https://qiita.com/" target="_blank">Qiita</a>
+                <a href="https://hamaruki.com/" target="_blank">Blog</a>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Tokiwavalley Project Archives. All Rights Reserved.
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // --- Accordion Functionality ---
+        function toggleTweets(btn) {
+            const list = btn.nextElementSibling;
+            const isOpen = list.classList.contains('open');
+            const arrow = btn.querySelector('span:last-child');
+
+            if (isOpen) {
+                list.classList.remove('open');
+                arrow.textContent = '▼';
+            } else {
+                list.classList.add('open');
+                arrow.textContent = '▲';
+            }
+        }
+
+        // --- Intersection Observer for Scroll Animations ---
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => observer.observe(section));
+
+        // --- Canvas Background Animation: Digital Ink Stream ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+                this.alpha = Math.random() * 0.5 + 0.1;
+                this.life = Math.random() * 100;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life--;
+
+                // Wrap around screen
+                if (this.x < 0) this.x = width;
+                if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height;
+                if (this.y > height) this.y = 0;
+
+                if (this.life <= 0) this.reset();
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(0, 240, 255, ${this.alpha})`; // Cyan particles
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const particleCount = Math.min(window.innerWidth / 10, 100); // Responsive count
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.1)'; // Trail effect
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw connections (Constellation effect / Network)
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                p.update();
+                p.draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(212, 175, 55, ${0.1 - dist/1500})`; // Gold connections
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            resize();
+            initParticles();
+        });
+
+        resize();
+        initParticles();
+        animate();
+    </script>
+</body>
+</html>

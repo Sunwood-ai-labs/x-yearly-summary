@@ -3,25 +3,24 @@
 const yearsData = [
     {
         year: 2024,
-        description: '2024年のX投稿まとめ',
+        description: '2024年のプロジェクトアーカイブ',
         stats: {
             posts: '準備中',
             likes: '準備中',
             retweets: '準備中'
         },
         link: './2024/index.html'
+    },
+    {
+        year: 2025,
+        description: '2025年のプロジェクトアーカイブ',
+        stats: {
+            posts: '100+',
+            likes: '準備中',
+            retweets: '準備中'
+        },
+        link: './2025/index.html'
     }
-    // 来年以降、以下のように追加できます：
-    // {
-    //     year: 2025,
-    //     description: '2025年のX投稿まとめ',
-    //     stats: {
-    //         posts: '準備中',
-    //         likes: '準備中',
-    //         retweets: '準備中'
-    //     },
-    //     link: './2025/index.html'
-    // }
 ];
 
 // ページ読み込み時に年別カードを生成

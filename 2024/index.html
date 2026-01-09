@@ -3,67 +3,540 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2024年 X まとめ</title>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="style-2024.css">
+    <title>Project Archives 2024 | Tokiwavalley Edition</title>
+
+    <!-- Google Fonts: Noto Serif JP (和風/雅), Orbitron (近未来/クール) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;500;700&family=Orbitron:wght@400;700&family=Zen+Kaku+Gothic+New:wght@300;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #050505; /* 墨色 */
+            --card-bg: rgba(20, 20, 25, 0.6);
+            --text-main: #e0e0e0;
+            --accent-gold: #d4af37; /* 金箔 */
+            --accent-cyan: #00f0ff; /* 未来光 */
+            --accent-ink: #2b2b2b;
+            --border-gold: rgba(212, 175, 55, 0.3);
+            --border-cyan: rgba(0, 240, 255, 0.3);
+            --font-serif: 'Noto Serif JP', serif;
+            --font-sans: 'Zen Kaku Gothic New', sans-serif;
+            --font-tech: 'Orbitron', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Background Animation Canvas --- */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        /* --- Layout & Typography --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-serif);
+            font-weight: 700;
+        }
+
+        /* --- Header --- */
+        header {
+            padding: 40px 0;
+            text-align: center;
+            border-bottom: 1px solid var(--border-gold);
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .hero-title-group {
+            display: inline-block;
+            text-align: left;
+        }
+
+        h1.main-title {
+            font-size: 4rem;
+            color: var(--accent-gold);
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            margin-bottom: 10px;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            height: 300px;
+            letter-spacing: 0.5rem;
+            border-left: 1px solid var(--accent-gold);
+            padding-left: 20px;
+            margin-left: 20px;
+        }
+
+        .subtitle {
+            font-family: var(--font-tech);
+            color: var(--accent-cyan);
+            font-size: 1.2rem;
+            letter-spacing: 0.2rem;
+            margin-top: 20px;
+            text-transform: uppercase;
+            position: absolute;
+            bottom: 20px;
+            right: 0;
+        }
+
+        nav {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-family: var(--font-tech);
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border: 1px solid var(--border-cyan);
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--border-cyan);
+        }
+
+        /* --- Project Sections --- */
+        section {
+            margin-bottom: 100px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--accent-ink);
+            padding-bottom: 10px;
+        }
+
+        .section-month {
+            font-family: var(--font-tech);
+            font-size: 2.5rem;
+            color: var(--text-main);
+            margin-right: 20px;
+            position: relative;
+        }
+
+        .section-month::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background: var(--accent-gold);
+            margin-top: 5px;
+        }
+
+        .section-desc {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* --- Cards --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-gold);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-color: var(--accent-cyan);
+        }
+
+        .card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: #aaa;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        /* --- Links & Buttons --- */
+        .links {
+            margin-bottom: 15px;
+        }
+
+        .link-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--accent-cyan);
+            text-decoration: none;
+            border: 1px solid var(--border-cyan);
+            margin-right: 5px;
+            margin-bottom: 5px;
+            transition: 0.3s;
+        }
+
+        .link-btn:hover {
+            background: var(--accent-cyan);
+            color: #000;
+        }
+
+        /* --- Tweet Accordion --- */
+        .tweet-accordion {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: 1px solid var(--accent-ink);
+            color: var(--accent-gold);
+            padding: 10px;
+            cursor: pointer;
+            font-family: var(--font-tech);
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tweet-accordion:hover {
+            border-color: var(--accent-gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .tweet-list {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 2px solid var(--border-cyan);
+        }
+
+        .tweet-list.open {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        /* Custom Scrollbar for tweet list */
+        .tweet-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .tweet-list::-webkit-scrollbar-track {
+            background: #000;
+        }
+        .tweet-list::-webkit-scrollbar-thumb {
+            background: var(--border-gold);
+        }
+
+        .tweet-item {
+            display: block;
+            padding: 8px 10px;
+            font-size: 0.75rem;
+            color: #888;
+            text-decoration: none;
+            border-bottom: 1px solid #1a1a1a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tweet-item:hover {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--accent-cyan);
+        }
+
+        /* --- Footer --- */
+        footer {
+            margin-top: 100px;
+            padding: 50px 0;
+            border-top: 1px solid var(--border-gold);
+            text-align: center;
+            background: #000;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .copyright {
+            color: #555;
+            font-size: 0.8rem;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            h1.main-title {
+                height: auto;
+                writing-mode: horizontal-tb;
+                border-left: none;
+                border-bottom: 1px solid var(--accent-gold);
+                padding-bottom: 10px;
+                margin-left: 0;
+                font-size: 2.5rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .subtitle {
+                position: static;
+                display: block;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>2024年 X まとめ</h1>
-            <p class="subtitle">2024 Year in Review</p>
-            <a href="../index.html" class="back-link">← トップに戻る</a>
-        </div>
-    </header>
 
-    <main class="container">
-        <section class="summary">
-            <h2>2024年の振り返り</h2>
-            <div class="summary-grid">
-                <div class="summary-card">
-                    <h3>投稿数</h3>
-                    <p class="big-number">-</p>
-                    <p class="description">今年の総投稿数</p>
-                </div>
-                <div class="summary-card">
-                    <h3>いいね数</h3>
-                    <p class="big-number">-</p>
-                    <p class="description">獲得したいいね数</p>
-                </div>
-                <div class="summary-card">
-                    <h3>リポスト数</h3>
-                    <p class="big-number">-</p>
-                    <p class="description">獲得したリポスト数</p>
-                </div>
-                <div class="summary-card">
-                    <h3>フォロワー増加</h3>
-                    <p class="big-number">-</p>
-                    <p class="description">今年増えたフォロワー数</p>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="container">
+        <header>
+            <div class="hero-title-group">
+                <h1 class="main-title">Project Archives</h1>
+                <div class="subtitle">TOKIWAVALLEY EDITION // 2024</div>
+            </div>
+
+            <nav>
+                <a href="../index.html">← トップに戻る</a>
+                <a href="#placeholder">Coming Soon</a>
+            </nav>
+        </header>
+
+        <!-- 2024年のコンテンツはここに追加予定 -->
+        <section id="placeholder">
+            <div class="section-header">
+                <div class="section-month">2024</div>
+                <div class="section-desc">Content Coming Soon</div>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <span class="card-icon">📝</span>
+                    <h3>準備中</h3>
+                    <p>2024年のプロジェクトアーカイブは現在準備中です。<br>コンテンツは順次追加予定です。</p>
                 </div>
             </div>
         </section>
 
-        <section class="highlights">
-            <h2>ハイライト</h2>
-            <div class="content-box">
-                <p>2024年の主な出来事や人気投稿をここに追加していきます。</p>
-                <!-- ここに具体的な投稿やハイライトを追加 -->
+        <footer>
+            <div class="footer-links">
+                <a href="https://x.com/hAru_mAki_ch" target="_blank">X (Twitter)</a>
+                <a href="https://note.com/sunwood_ai_labs" target="_blank">note</a>
+                <a href="https://github.com/Sunwood-ai-labs" target="_blank">GitHub</a>
+                <a href="https://zenn.dev/" target="_blank">Zenn</a>
+                <a href="https://qiita.com/" target="_blank">Qiita</a>
+                <a href="https://hamaruki.com/" target="_blank">Blog</a>
             </div>
-        </section>
-
-        <section class="monthly-breakdown">
-            <h2>月別アクティビティ</h2>
-            <div class="content-box">
-                <p>月ごとの投稿傾向やデータをここに追加できます。</p>
-                <!-- 月別のグラフやデータを追加 -->
+            <div class="copyright">
+                &copy; 2024 Tokiwavalley Project Archives. All Rights Reserved.
             </div>
-        </section>
-    </main>
+        </footer>
+    </div>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 X Yearly Summary. All rights reserved.</p>
-        </div>
-    </footer>
+    <script>
+        // --- Accordion Functionality ---
+        function toggleTweets(btn) {
+            const list = btn.nextElementSibling;
+            const isOpen = list.classList.contains('open');
+            const arrow = btn.querySelector('span:last-child');
+
+            if (isOpen) {
+                list.classList.remove('open');
+                arrow.textContent = '▼';
+            } else {
+                list.classList.add('open');
+                arrow.textContent = '▲';
+            }
+        }
+
+        // --- Intersection Observer for Scroll Animations ---
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => observer.observe(section));
+
+        // --- Canvas Background Animation: Digital Ink Stream ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+                this.alpha = Math.random() * 0.5 + 0.1;
+                this.life = Math.random() * 100;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life--;
+
+                // Wrap around screen
+                if (this.x < 0) this.x = width;
+                if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height;
+                if (this.y > height) this.y = 0;
+
+                if (this.life <= 0) this.reset();
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(0, 240, 255, ${this.alpha})`;
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const particleCount = Math.min(window.innerWidth / 10, 100);
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                p.update();
+                p.draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(212, 175, 55, ${0.1 - dist/1500})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            resize();
+            initParticles();
+        });
+
+        resize();
+        initParticles();
+        animate();
+    </script>
 </body>
 </html>
