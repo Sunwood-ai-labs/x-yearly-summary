@@ -1,0 +1,565 @@
+:root {
+    --bg-color: #050505;
+    --card-bg: rgba(20, 20, 25, 0.6);
+    --text-main: #e0e0e0;
+    --accent-gold: #d4af37;
+    --accent-cyan: #00f0ff;
+    --accent-ink: #2b2b2b;
+    --border-gold: rgba(212, 175, 55, 0.3);
+    --border-cyan: rgba(0, 240, 255, 0.3);
+    --font-serif: 'Noto Serif JP', serif;
+    --font-sans: 'Zen Kaku Gothic New', sans-serif;
+    --font-tech: 'Orbitron', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* --- Background Animation Canvas --- */
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.6;
+}
+
+/* --- Layout & Typography --- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+}
+
+/* --- Header --- */
+header {
+    padding: 40px 0;
+    text-align: center;
+    border-bottom: 1px solid var(--border-gold);
+    margin-bottom: 60px;
+    position: relative;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-title-group {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+
+.author-info {
+    text-align: left;
+    border-right: 2px solid var(--border-gold);
+    padding-right: 40px;
+}
+
+.author-name {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    color: var(--accent-gold);
+    margin-bottom: 10px;
+    letter-spacing: 0.2rem;
+}
+
+.author-lab {
+    font-family: var(--font-tech);
+    font-size: 0.9rem;
+    color: var(--accent-cyan);
+    letter-spacing: 0.15rem;
+}
+
+h1.main-title {
+    font-size: 5.5rem;
+    color: rgba(212, 175, 55, 0.3);
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    height: 380px;
+    letter-spacing: 0.6rem;
+    border-left: 1px solid rgba(212, 175, 55, 0.3);
+    padding-left: 20px;
+}
+
+.subtitle-wrapper {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+.subtitle {
+    font-family: var(--font-tech);
+    color: var(--accent-cyan);
+    font-size: 1.2rem;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+}
+
+.intro {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--text-main);
+    max-width: 900px;
+    margin: 0 auto 60px;
+    padding: 30px;
+    background: rgba(10, 15, 20, 0.6);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid var(--border-gold);
+    border-bottom: 1px solid var(--border-gold);
+    /* Cyberpunk bracket effect using linear-gradients for sides */
+    background-image:
+        linear-gradient(to bottom, var(--accent-gold), var(--accent-gold)),
+        linear-gradient(to bottom, var(--accent-gold), var(--accent-gold)),
+        linear-gradient(to bottom, var(--accent-gold), var(--accent-gold)),
+        linear-gradient(to bottom, var(--accent-gold), var(--accent-gold));
+    background-repeat: no-repeat;
+    background-size: 2px 20px;
+    background-position: top left, top right, bottom left, bottom right;
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.intro p:first-child {
+    font-family: var(--font-serif);
+    /* Keep title serif for elegance */
+    font-size: 2rem;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    margin-bottom: 10px;
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+.intro p:nth-child(2) {
+    font-family: var(--font-tech);
+    color: var(--accent-cyan);
+    font-size: 1.2rem;
+    letter-spacing: 0.1rem;
+    background: rgba(0, 240, 255, 0.05);
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    align-self: center;
+}
+
+/* --- Year Cards Grid --- */
+.years-section {
+    margin-bottom: 100px;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 60px;
+    color: var(--accent-gold);
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+}
+
+.year-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 40px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.year-grid.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.year-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border-gold);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.year-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.year-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    border-color: var(--accent-cyan);
+}
+
+.year-card:hover::before {
+    transform: translateX(100%);
+}
+
+.year-card h3 {
+    font-size: 3rem;
+    color: var(--accent-gold);
+    margin-bottom: 15px;
+    font-family: var(--font-tech);
+}
+
+.year-card p {
+    font-size: 1rem;
+    color: #aaa;
+    margin-bottom: 30px;
+}
+
+/* Main Navigation (for subpages) */
+.breadcrumbs {
+    margin-top: 20px;
+    margin-bottom: 50px;
+    text-align: center;
+    font-family: var(--font-tech);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.9rem;
+    color: #444;
+    /* Separator color */
+}
+
+.breadcrumbs a {
+    color: var(--accent-cyan);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    padding: 5px 10px;
+    border: 1px solid transparent;
+    /* Reserve space for border */
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.breadcrumbs a:hover {
+    color: #fff;
+    text-shadow: 0 0 10px var(--accent-cyan);
+    border-bottom: 1px solid var(--accent-cyan);
+    background: linear-gradient(to top, rgba(0, 240, 255, 0.1), transparent);
+}
+
+/* Add custom separator logic via JS or explicit HTML usually, 
+   but currently text is ">". Let's style the text node if possible 
+   or just rely on the existing text content which is just ">".
+   Since it's text, we can't style it easily without a span.
+   However, the generation script puts " > " as text. 
+   We can mask it or just style the container to look techy. 
+   Ideally we'd update generate script to use a span for separators.
+   For now, simple styling.
+*/
+
+/* Stats */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(20, 20, 25, 0.8), rgba(10, 10, 15, 0.9));
+    border: 1px solid var(--accent-ink);
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.3s;
+    overflow: hidden;
+}
+
+.stat-item:hover {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.stat-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+    opacity: 0.5;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 8px;
+    font-family: var(--font-tech);
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+}
+
+.stat-value {
+    display: block;
+    font-size: 2rem;
+    color: var(--accent-cyan);
+    font-weight: 700;
+    font-family: var(--font-tech);
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+}
+
+/* Tweet List Style for Logs (Masonry Layout) */
+.tweet-list {
+    list-style: none;
+    column-count: 1;
+    /* Mobile default */
+    column-gap: 30px;
+}
+
+/* Desktop: 3 columns */
+@media (min-width: 1024px) {
+    .tweet-list {
+        column-count: 3;
+    }
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .tweet-list {
+        column-count: 2;
+    }
+}
+
+.tweet-card-wrapper {
+    break-inside: avoid;
+    /* Prevent card splitting across columns */
+    background: linear-gradient(145deg, rgba(20, 20, 25, 0.9), rgba(10, 10, 15, 0.95));
+    border: 1px solid var(--border-gold);
+    margin-bottom: 30px;
+    padding: 25px;
+    border-radius: 4px;
+    /* Slightly angular for tech feel */
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    /* Cyberpunk decorative corner */
+    clip-path: polygon(0 0,
+            100% 0,
+            100% calc(100% - 15px),
+            calc(100% - 15px) 100%,
+            0 100%);
+}
+
+/* Decorative "Tech" Corners using pseudo-elements */
+.tweet-card-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, transparent 50%, var(--accent-gold) 50%);
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+.tweet-card-wrapper:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 240, 255, 0.15);
+    border-color: var(--accent-cyan);
+}
+
+/* "Frame" effect for the internal content */
+.tweet-card-wrapper .twitter-tweet {
+    margin: 0 !important;
+    /* Override twitter widget margin */
+    border: none;
+}
+
+/* Styling the raw HTML content if widget doesn't load or for custom text */
+.tweet-text {
+    color: var(--text-main);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.tweet-media img,
+.tweet-media video {
+    max-width: 100%;
+    border: 1px solid var(--accent-ink);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-top: 10px;
+}
+
+.tweet-stats {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    font-size: 0.8rem;
+    color: #888;
+    display: flex;
+    gap: 15px;
+    font-family: var(--font-tech);
+}
+
+/* Series Specific */
+.series-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 50px;
+}
+
+.series-link {
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-gold);
+    color: var(--accent-gold);
+    text-decoration: none;
+    transition: all 0.3s;
+    font-family: var(--font-tech);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.series-link:hover {
+    background: var(--accent-gold);
+    color: #000;
+    box-shadow: 0 0 15px var(--accent-gold);
+}
+
+.series-link .count {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+/* --- Footer --- */
+footer {
+    margin-top: 100px;
+    padding: 50px 0;
+    border-top: 1px solid var(--border-gold);
+    text-align: center;
+    background: #000;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: var(--text-main);
+    text-decoration: none;
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: var(--accent-gold);
+}
+
+.copyright {
+    color: #555;
+    font-size: 0.8rem;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    header {
+        min-height: auto;
+    }
+
+    .hero-title-group {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .author-info {
+        border-right: none;
+        border-bottom: 2px solid var(--border-gold);
+        padding-right: 0;
+        padding-bottom: 20px;
+        text-align: center;
+    }
+
+    h1.main-title {
+        font-size: 3.5rem;
+        height: auto;
+        writing-mode: horizontal-tb;
+        border-left: none;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        padding-left: 0;
+        padding-bottom: 10px;
+    }
+
+    .subtitle-wrapper {
+        position: static;
+        margin-top: 20px;
+    }
+
+    .year-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+}
