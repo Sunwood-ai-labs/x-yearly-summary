@@ -66,33 +66,68 @@
 
         /* --- Header --- */
         header {
-            padding: 60px 0;
+            padding: 40px 0;
             text-align: center;
             border-bottom: 1px solid var(--border-gold);
-            margin-bottom: 80px;
+            margin-bottom: 60px;
             position: relative;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .hero-title-group {
-            display: inline-block;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 40px;
             margin-bottom: 30px;
         }
 
-        h1.main-title {
-            font-size: 5rem;
+        .author-info {
+            text-align: left;
+            border-right: 2px solid var(--border-gold);
+            padding-right: 40px;
+        }
+
+        .author-name {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
             color: var(--accent-gold);
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-            margin-bottom: 20px;
-            letter-spacing: 0.3rem;
-            writing-mode: horizontal-tb;
+            margin-bottom: 10px;
+            letter-spacing: 0.2rem;
+        }
+
+        .author-lab {
+            font-family: var(--font-tech);
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+            letter-spacing: 0.15rem;
+        }
+
+        h1.main-title {
+            font-size: 4rem;
+            color: var(--accent-gold);
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            height: 300px;
+            letter-spacing: 0.5rem;
+            border-left: 1px solid var(--accent-gold);
+            padding-left: 20px;
+        }
+
+        .subtitle-wrapper {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
         }
 
         .subtitle {
             font-family: var(--font-tech);
             color: var(--accent-cyan);
-            font-size: 1.4rem;
-            letter-spacing: 0.3rem;
+            font-size: 1.2rem;
+            letter-spacing: 0.2rem;
             text-transform: uppercase;
         }
 
@@ -256,8 +291,32 @@
 
         /* Mobile Adjustments */
         @media (max-width: 768px) {
+            header {
+                min-height: auto;
+            }
+            .hero-title-group {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .author-info {
+                border-right: none;
+                border-bottom: 2px solid var(--border-gold);
+                padding-right: 0;
+                padding-bottom: 20px;
+                text-align: center;
+            }
             h1.main-title {
-                font-size: 3rem;
+                font-size: 2.5rem;
+                height: auto;
+                writing-mode: horizontal-tb;
+                border-left: none;
+                border-bottom: 1px solid var(--accent-gold);
+                padding-left: 0;
+                padding-bottom: 10px;
+            }
+            .subtitle-wrapper {
+                position: static;
+                margin-top: 20px;
             }
             .year-grid {
                 grid-template-columns: 1fr;
@@ -275,15 +334,21 @@
     <div class="container">
         <header>
             <div class="hero-title-group">
-                <h1 class="main-title">PROJECT ARCHIVES</h1>
+                <div class="author-info">
+                    <div class="author-name">Maki</div>
+                    <div class="author-lab">SUNWOOD AI LABS</div>
+                </div>
+                <h1 class="main-title">Project Archives</h1>
+            </div>
+            <div class="subtitle-wrapper">
                 <div class="subtitle">TOKIWAVALLEY EDITION</div>
             </div>
-
-            <p class="intro">
-                和風とサイバーパンクが融合した、プロジェクトアーカイブコレクション。<br>
-                年別に整理された創作活動の軌跡をご覧ください。
-            </p>
         </header>
+
+        <p class="intro">
+            和風とサイバーパンクが融合した、プロジェクトアーカイブコレクション。<br>
+            年別に整理された創作活動の軌跡をご覧ください。
+        </p>
 
         <section class="years-section">
             <h2 class="section-title">年別アーカイブ</h2>

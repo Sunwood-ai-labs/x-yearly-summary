@@ -74,22 +74,42 @@
         }
 
         .hero-title-group {
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .author-info {
             text-align: left;
+            border-right: 2px solid var(--border-gold);
+            padding-right: 40px;
+        }
+
+        .author-name {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+            margin-bottom: 10px;
+            letter-spacing: 0.2rem;
+        }
+
+        .author-lab {
+            font-family: var(--font-tech);
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+            letter-spacing: 0.15rem;
         }
 
         h1.main-title {
             font-size: 4rem;
             color: var(--accent-gold);
             text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-            margin-bottom: 10px;
             writing-mode: vertical-rl;
             text-orientation: upright;
             height: 300px;
             letter-spacing: 0.5rem;
             border-left: 1px solid var(--accent-gold);
             padding-left: 20px;
-            margin-left: 20px;
         }
 
         .subtitle {
@@ -97,7 +117,6 @@
             color: var(--accent-cyan);
             font-size: 1.2rem;
             letter-spacing: 0.2rem;
-            margin-top: 20px;
             text-transform: uppercase;
             position: absolute;
             bottom: 20px;
@@ -351,13 +370,24 @@
 
         /* Mobile Adjustments */
         @media (max-width: 768px) {
+            .hero-title-group {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .author-info {
+                border-right: none;
+                border-bottom: 2px solid var(--border-gold);
+                padding-right: 0;
+                padding-bottom: 20px;
+                text-align: center;
+            }
             h1.main-title {
                 height: auto;
                 writing-mode: horizontal-tb;
                 border-left: none;
                 border-bottom: 1px solid var(--accent-gold);
                 padding-bottom: 10px;
-                margin-left: 0;
+                padding-left: 0;
                 font-size: 2.5rem;
             }
             .grid {
@@ -377,9 +407,13 @@
     <div class="container">
         <header>
             <div class="hero-title-group">
+                <div class="author-info">
+                    <div class="author-name">Maki</div>
+                    <div class="author-lab">SUNWOOD AI LABS</div>
+                </div>
                 <h1 class="main-title">Project Archives</h1>
-                <div class="subtitle">TOKIWAVALLEY EDITION // 2024</div>
             </div>
+            <div class="subtitle">TOKIWAVALLEY EDITION // 2024</div>
 
             <nav>
                 <a href="../index.html">← トップに戻る</a>
