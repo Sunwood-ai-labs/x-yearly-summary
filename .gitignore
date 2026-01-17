@@ -8,6 +8,10 @@ twitter-archive/2025/*
 # Node modules
 node_modules/
 
+# SvelteKit
+.svelte-kit/
+build/
+
 # Logs
 *.log
 npm-debug.log*
@@ -24,3 +28,4 @@ Thumbs.db
 *.tmp
 *.temp
 twitter-archive/raw/
+.SourceSageAssets/Repository_summary.md
