@@ -1,0 +1,163 @@
+<script lang="ts">
+	import Header from '$lib/components/Header.svelte';
+	import ProjectCard from '$lib/components/ProjectCard.svelte';
+	import { projects2025, type ProjectData } from '$lib/data/2025Data';
+	import { onMount } from 'svelte';
+	import { base } from '$app/paths';
+
+	let visibleSections = $state<Set<string>>(new Set());
+
+	onMount(() => {
+		// Intersection Observer for scroll animations
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						const sectionId = entry.target.id;
+						visibleSections = new Set([...visibleSections, sectionId]);
+					}
+				});
+			},
+			{ threshold: 0.1 }
+		);
+
+		document.querySelectorAll('section').forEach((section) => {
+			observer.observe(section);
+		});
+
+		return () => observer.disconnect();
+	});
+</script>
+
+<svelte:head>
+	<title>Project Archives 2025</title>
+</svelte:head>
+
+<Header type="year" year={2025} />
+
+<nav>
+	<a href="{base}/">← トップに戻る</a>
+	<a href="#sept">September</a>
+	<a href="#oct">October</a>
+	<a href="#nov">November</a>
+	<a href="#dec-early">December Early</a>
+	<a href="#dec-late">December Late</a>
+</nav>
+
+{#each projects2025 as sectionData}
+	<section id={sectionData.sectionId} class:visible={visibleSections.has(sectionData.sectionId)}>
+		<div class="section-header">
+			<div class="section-month">
+				{sectionData.sectionTitle}
+				{#if sectionData.sectionSubtitle}
+					<span class="section-subtitle">{sectionData.sectionSubtitle}</span>
+				{/if}
+			</div>
+			<div class="section-desc">
+				{sectionData.sectionId === 'dec-late'
+					? 'Cybersecurity, 3D Assets & New Year Greetings'
+					: sectionData.sectionId === 'dec-early'
+						? 'Automation, Repositories & Magazines'
+						: sectionData.sectionId === 'nov'
+							? 'Multi-Agents, Apps & Image Gen'
+							: sectionData.sectionId === 'oct'
+								? 'Video Gen, Agents & Holograms'
+								: 'Hackathons, Vidu & Research'}
+			</div>
+		</div>
+		<div class="grid">
+			{#each sectionData.projects as project}
+				<ProjectCard
+					{...project}
+					tweets={project.tweets ?? []}
+					tweetCount={project.tweetCount ?? project.tweets?.length} />
+			{/each}
+		</div>
+	</section>
+{/each}
+
+<style>
+	nav {
+		margin-top: 30px;
+		margin-bottom: 60px;
+		display: flex;
+		justify-content: center;
+		gap: 20px;
+		flex-wrap: wrap;
+	}
+
+	nav a {
+		color: #e0e0e0;
+		text-decoration: none;
+		font-family: 'Orbitron', sans-serif;
+		font-size: 0.9rem;
+		padding: 8px 16px;
+		border: 1px solid rgba(0, 240, 255, 0.3);
+		transition: all 0.3s ease;
+	}
+
+	nav a:hover {
+		background: rgba(0, 240, 255, 0.1);
+		color: #00f0ff;
+		box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+	}
+
+	section {
+		margin-bottom: 100px;
+		opacity: 0;
+		transform: translateY(30px);
+		transition: opacity 0.8s ease, transform 0.8s ease;
+	}
+
+	section.visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.section-header {
+		display: flex;
+		align-items: center;
+		margin-bottom: 40px;
+		border-bottom: 1px solid #2b2b2b;
+		padding-bottom: 10px;
+	}
+
+	.section-month {
+		font-family: 'Orbitron', sans-serif;
+		font-size: 2.5rem;
+		color: #e0e0e0;
+		margin-right: 20px;
+		position: relative;
+	}
+
+	.section-month::after {
+		content: '';
+		display: block;
+		width: 40px;
+		height: 2px;
+		background: #d4af37;
+		margin-top: 5px;
+	}
+
+	.section-subtitle {
+		font-size: 1rem;
+		color: #d4af37;
+	}
+
+	.section-desc {
+		color: #888;
+		font-size: 0.9rem;
+	}
+
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+		gap: 30px;
+	}
+
+	@media (max-width: 768px) {
+		.grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
