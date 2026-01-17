@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cline x CadQuery で私もCADやってみた | Project 2025</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <!-- Widgets JS is loaded per card or globally? Better globally -->
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <style>
+        /* CSS is handled in style.css */
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="container">
+        <header>
+            <div class="hero-title-group">
+                <h1 class="main-title">Cline x CadQuery で私もCADやってみた</h1>
+            </div>
+        </header>
+        
+        
+    <nav class="breadcrumbs">
+        <a href="../../index.html">Home</a>
+         > <a href="../index.html">2025</a>
+        
+        
+        > Cline x CadQuery で私もCADやってみた
+    </nav>
+    
+
+        <main>
+            
+        <div class="intro">
+            <p>Series: Cline x CadQuery で私もCADやってみた</p>
+            <p>Total Items: 2</p>
+        </div>
+        <div class="tweet-list">
+            
+<div class="tweet-card-wrapper">
+    <blockquote class="twitter-tweet" data-theme="dark" data-media-max-width="560">
+        <p lang="ja" dir="ltr">
+            Cline x CadQuery で私もCADやってみた③<br>フィレットと肉抜きをもうちょっと具体的に言ったら結構いい感じに！ガラスを置く場所の肉抜きや足で強度を保ったままやってくれてそう！！！ https://t.co/6EXnlIslfM https://t.co/cIRiAKagYp
+        </p>
+        &mdash; Maki@Sunwood AI Labs. (@hAru_mAki_ch) 
+        <a href="https://twitter.com/hAru_mAki_ch/status/1901279243394539866?ref_src=twsrc%5Etfw">March 16, 2025</a>
+    </blockquote> 
+</div>
+
+
+<div class="tweet-card-wrapper">
+    <blockquote class="twitter-tweet" data-theme="dark" data-media-max-width="560">
+        <p lang="ja" dir="ltr">
+            Cline x CadQuery で私もCADやってみた②<br>フィレットして肉抜きしてもらった！！！<br>肉抜きの仕方が微妙だったので、具体的にどうするのか指示をした方が良さそう！！ https://t.co/snandTiNsu https://t.co/qijz5wmH2N
+        </p>
+        &mdash; Maki@Sunwood AI Labs. (@hAru_mAki_ch) 
+        <a href="https://twitter.com/hAru_mAki_ch/status/1901270857672183973?ref_src=twsrc%5Etfw">March 16, 2025</a>
+    </blockquote> 
+</div>
+
+        </div>
+        
+        </main>
+
+        <footer>
+            <div class="footer-links">
+                <a href="https://x.com/hAru_mAki_ch">X</a>
+                <a href="../index.html">Archive Home</a>
+            </div>
+            <div class="copyright">&copy; 2025 Maki@Sunwood AI Labs.</div>
+        </footer>
+    </div>
+    <script>
+        // Copy canvas animation from main index (simplified reuse?)
+        // For now just empty or copy content if needed.
+        // Let's assume style.css handles styling, but canvas JS is needed for animation.
+        // We will include the canvas script here inline for simplicity to match index.html
+        
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5; this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2; this.alpha = Math.random() * 0.5 + 0.1;
+                this.life = Math.random() * 100;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy; this.life--;
+                if(this.x<0)this.x=width; if(this.x>width)this.x=0;
+                if(this.y<0)this.y=height; if(this.y>height)this.y=0;
+                if(this.life<=0)this.reset();
+            }
+            draw() {
+                ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+                ctx.fillStyle = `rgba(0, 240, 255, ${this.alpha})`; ctx.fill();
+            }
+        }
+        function init() { particles = []; for(let i=0; i<Math.min(window.innerWidth/10,50); i++) particles.push(new Particle()); }
+        function animate() {
+            ctx.fillStyle = 'rgba(5,5,5,0.1)'; ctx.fillRect(0,0,width,height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        window.addEventListener('resize', ()=>{resize();init();});
+        resize(); init(); animate();
+    </script>
+</body>
+</html>
