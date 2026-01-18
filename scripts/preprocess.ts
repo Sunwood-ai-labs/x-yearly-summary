@@ -280,7 +280,9 @@ function main() {
 					dt,
 					date_str,
 					time_str,
-					entities: tweet.entities
+					entities: tweet.entities,
+					favorite_count: tweet.favorite_count,
+					retweet_count: tweet.retweet_count
 				});
 			}
 		} catch (e) {
