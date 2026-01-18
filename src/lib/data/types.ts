@@ -22,7 +22,34 @@ export interface Tweet {
 			display_url: string;
 			expanded_url: string;
 		}>;
+		media?: Array<{
+			type: 'photo' | 'video' | 'animated_gif';
+			media_url_https: string;
+			url: string;
+			display_url: string;
+			expanded_url: string;
+			ext?: string;
+			sizes?: {
+				thumb?: { w: number; h: number; resize: string };
+				small?: { w: number; h: number; resize: string };
+				medium?: { w: number; h: number; resize: string };
+				large?: { w: number; h: number; resize: string };
+			};
+			video_info?: {
+				variants?: Array<{
+					bitrate?: number;
+					content_type: string;
+					url: string;
+				}>;
+			};
+		}>;
 	};
+	/** いいね数 */
+	favorite_count?: number;
+	/** リツイート数 */
+	retweet_count?: number;
+	/** リプライ数 */
+	reply_count?: number;
 }
 
 /**
