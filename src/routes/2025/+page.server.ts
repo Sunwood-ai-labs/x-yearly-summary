@@ -8,9 +8,17 @@ export const load: PageServerLoad = () => {
 	const jsonContent = readFileSync(jsonPath, 'utf-8');
 	const indexData = JSON.parse(jsonContent);
 
+	// シリーズ一覧用に軽量化（title, slug, tweetCount, styleのみ）
+	const lightSeries = indexData.series.map((s: any) => ({
+		title: s.title,
+		slug: s.slug,
+		tweetCount: s.tweetCount,
+		style: s.style
+	}));
+
 	return {
 		tweetsByMonth: indexData.tweetsByMonth,
-		series: indexData.series,
+		series: lightSeries,
 		totalTweets: indexData.totalTweets,
 		totalSeries: indexData.totalSeries
 	};
