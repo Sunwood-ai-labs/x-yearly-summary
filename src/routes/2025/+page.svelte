@@ -138,14 +138,6 @@
 
 	section {
 		margin-bottom: 100px;
-		opacity: 0;
-		transform: translateY(30px);
-		transition: opacity 0.8s ease, transform 0.8s ease;
-	}
-
-	section.visible {
-		opacity: 1;
-		transform: translateY(0);
 	}
 
 	/* Stats Section */
