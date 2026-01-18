@@ -19,6 +19,15 @@
 			window.scrollBy({ top: 100, behavior: 'smooth' });
 		}, 100);
 	}
+
+	// スタイルに応じた色
+	const styleColors: Record<string, string> = {
+		circle: '#00f0ff',
+		solid_circle: '#d4af37',
+		keycap: '#ff6b6b',
+		standard: '#4ecdc4',
+		vol: '#a8e6cf'
+	};
 </script>
 
 <svelte:head>
@@ -42,17 +51,33 @@
 	</header>
 
 	<main>
-		<div class="series-list">
+		<div class="mosaic-grid">
 			{#each visibleSeries() as s (s.slug)}
-				<a href="{base}/2025/series/{s.slug}" class="series-card">
-					<div class="series-info">
-						<div class="series-title">{s.title}</div>
-						<div class="series-meta">
-							<span class="series-style">{s.style}</span>
-							<span class="series-count">{s.tweetCount} tweets</span>
+				<a href="{base}/2025/series/{s.slug}" class="mosaic-tile" class:has-image={s.thumbnailUrl}>
+					{#if s.thumbnailUrl}
+						<div class="tile-image-wrapper">
+							<img
+								src={s.thumbnailUrl}
+								alt={s.title}
+								class="tile-image"
+								loading="lazy" />
+							{#if s.thumbnailType === 'video'}
+								<div class="video-indicator">
+									<i class="fa-solid fa-play"></i>
+								</div>
+							{/if}
 						</div>
+					{/if}
+					<div class="tile-content">
+						<div class="tile-style" style="color: {styleColors[s.style] || '#888'}">
+							{s.style}
+						</div>
+						<div class="tile-title">{s.title}</div>
+						<div class="tile-count">{s.tweetCount} tweets</div>
 					</div>
-					<div class="series-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+					<div class="tile-overlay">
+						<i class="fa-solid fa-arrow-right overlay-icon"></i>
+					</div>
 				</a>
 			{/each}
 		</div>
@@ -83,7 +108,7 @@
 	.container {
 		min-height: 100vh;
 		padding: 40px 20px 80px;
-		max-width: 1000px;
+		max-width: 1400px;
 		margin: 0 auto;
 		position: relative;
 		z-index: 1;
@@ -93,10 +118,10 @@
 	.breadcrumbs {
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: 8px;
 		flex-wrap: wrap;
-		margin-bottom: 30px;
-		font-size: 0.9rem;
+		margin-bottom: 40px;
+		font-size: 0.85rem;
 		font-family: 'Orbitron', sans-serif;
 		padding: 12px 20px;
 		background: rgba(0, 0, 0, 0.3);
@@ -118,13 +143,9 @@
 		text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
 	}
 
-	.breadcrumbs span {
-		color: #888;
-	}
-
 	.breadcrumbs .separator {
-		color: #888;
-		font-size: 0.7rem;
+		color: #666;
+		font-size: 0.65rem;
 	}
 
 	.breadcrumbs .current {
@@ -154,7 +175,7 @@
 		font-family: 'Orbitron', sans-serif;
 		font-size: 3rem;
 		color: #e0e0e0;
-		margin-bottom: 10px;
+		margin-bottom: 15px;
 	}
 
 	.subtitle {
@@ -167,64 +188,157 @@
 		display: inline-block;
 	}
 
-	/* Series List */
-	.series-list {
-		display: flex;
-		flex-direction: column;
-		gap: 15px;
+	/* Mosaic Grid Layout */
+	.mosaic-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: 20px;
 	}
 
-	.series-card {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		background: rgba(212, 175, 55, 0.05);
-		border: 1px solid rgba(212, 175, 55, 0.2);
-		border-radius: 8px;
-		padding: 15px 20px;
+	/* Mosaic Tile */
+	.mosaic-tile {
+		position: relative;
+		display: block;
 		text-decoration: none;
 		color: inherit;
-		transition: all 0.3s ease;
+		background: rgba(20, 20, 25, 0.6);
+		border: 1px solid rgba(212, 175, 55, 0.2);
+		border-radius: 16px;
+		overflow: hidden;
+		transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+		backdrop-filter: blur(10px);
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+		min-height: 200px;
 	}
 
-	.series-card:hover {
-		background: rgba(212, 175, 55, 0.1);
-		transform: translateX(10px);
-		box-shadow: 0 5px 20px rgba(212, 175, 55, 0.2);
+	.mosaic-tile:hover {
+		transform: translateY(-8px) scale(1.02);
+		border-color: rgba(0, 240, 255, 0.5);
+		box-shadow: 0 20px 50px rgba(0, 240, 255, 0.3);
 	}
 
-	.series-info {
-		flex: 1;
+	.mosaic-tile:not(.has-image) {
+		background: linear-gradient(145deg, rgba(20, 20, 25, 0.9), rgba(10, 10, 15, 0.95));
+		border: 2px solid rgba(212, 175, 55, 0.3);
 	}
 
-	.series-title {
-		font-size: 1rem;
-		color: #e0e0e0;
-		margin-bottom: 5px;
+	/* Tile Image */
+	.tile-image-wrapper {
+		width: 100%;
+		height: 200px;
+		overflow: hidden;
+		position: relative;
+		background: #000;
 	}
 
-	.series-meta {
+	.tile-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.6s ease;
+		display: block;
+	}
+
+	.mosaic-tile:hover .tile-image {
+		transform: scale(1.1);
+	}
+
+	.video-indicator {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		width: 32px;
+		height: 32px;
+		background: rgba(0, 0, 0, 0.7);
+		border-radius: 50%;
 		display: flex;
-		gap: 15px;
+		align-items: center;
+		justify-content: center;
+		backdrop-filter: blur(5px);
+	}
+
+	.video-indicator i {
+		color: #fff;
+		font-size: 0.9rem;
+	}
+
+	/* Tile Content */
+	.tile-content {
+		padding: 16px;
+		position: relative;
+		z-index: 1;
+		background: linear-gradient(to top, rgba(5, 5, 5, 0.95), rgba(5, 5, 5, 0.7));
+		backdrop-filter: blur(10px);
+		border-top: 1px solid rgba(212, 175, 55, 0.1);
+	}
+
+	.has-image .tile-content {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 16px;
+		background: linear-gradient(to top, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.6));
+	}
+
+	.tile-style {
+		font-family: 'Orbitron', sans-serif;
+		font-size: 0.65rem;
+		text-transform: uppercase;
+		letter-spacing: 0.1rem;
+		padding: 4px 10px;
+		background: rgba(255, 255, 255, 0.1);
+		border-radius: 4px;
+		display: inline-block;
+		margin-bottom: 8px;
+	}
+
+	.tile-title {
+		font-family: 'Noto Serif JP', serif;
+		font-size: 1rem;
+		font-weight: 500;
+		color: #e0e0e0;
+		line-height: 1.4;
+		margin-bottom: 8px;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.tile-count {
+		font-family: 'Orbitron', sans-serif;
 		font-size: 0.8rem;
 		color: #888;
 	}
 
-	.series-style {
-		font-family: 'Orbitron', sans-serif;
-		padding: 2px 8px;
-		background: rgba(212, 175, 55, 0.1);
-		border-radius: 4px;
-		text-transform: uppercase;
+	/* Overlay Icon */
+	.tile-overlay {
+		position: absolute;
+		top: 15px;
+		right: 15px;
+		width: 36px;
+		height: 36px;
+		background: rgba(0, 0, 0, 0.6);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0;
+		transform: scale(0.8);
+		transition: all 0.3s ease;
+		backdrop-filter: blur(5px);
+		z-index: 2;
 	}
 
-	.series-count {
-		color: #d4af37;
+	.mosaic-tile:hover .tile-overlay {
+		opacity: 1;
+		transform: scale(1);
 	}
 
-	.series-arrow {
-		font-size: 1.2rem;
-		color: #d4af37;
+	.overlay-icon {
+		color: #00f0ff;
+		font-size: 1rem;
 	}
 
 	/* Load More Button */
@@ -246,7 +360,7 @@
 		font-family: 'Orbitron', sans-serif;
 		font-size: 1rem;
 		font-weight: 600;
-		letter-spacing: 0.1rem;
+			letter-spacing: 0.1rem;
 		cursor: pointer;
 		transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 		backdrop-filter: blur(10px);
@@ -326,6 +440,15 @@
 	@media (max-width: 768px) {
 		.main-title {
 			font-size: 2rem;
+		}
+
+		.mosaic-grid {
+			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+			gap: 15px;
+		}
+
+		.tile-image-wrapper {
+			height: 150px;
 		}
 	}
 </style>
